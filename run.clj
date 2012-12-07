@@ -10,4 +10,4 @@
 
 (println (str "Output #5: " (show-route (find-exact-route "A-E-D"))))
 
-
+(println (str "Output #5: " (count (filter (destination-filter \C) (filter-routes-for \C (max-stops-filter 3))))))
