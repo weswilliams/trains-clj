@@ -1,10 +1,10 @@
 (ns train.routes (:require [clojure.core :refer :all]))
 (import 'java.lang.Integer)
 
-(def routes (sort-by :distance (for [route (re-seq #"[a-zA-Z]{2}\d" "ab5 bc4 bd3 dc7 ca8")] 
+(def routes (sort-by :distance (for [route (re-seq #"[a-zA-Z]{2}\d" "AB5 BC4 CD8 DC8 DE6 AD5 CE2 EB3 AE7")] 
   (array-map :origin (nth route 0) :destination (nth route 1) :distance (Integer/parseInt (str (nth route 2)))))))
 
-(defn route-pairs [route-str] (for [route (re-seq #"(?=([a-z]-[a-z]))" route-str)] (nth route 1)))
+(defn route-pairs [route-str] (for [route (re-seq #"(?=([a-zA-Z]-[a-zA-Z]))" route-str)] (nth route 1)))
 
 (defn route-map [route-str] (for [pair (route-pairs route-str)] (array-map :origin (nth pair 0) :destination (nth pair 2))))
 
@@ -45,7 +45,7 @@
 
 (defn show-route [route-map] 
   (let [
-    no-route (str "No Route")
+    no-route (str "NO SUCH ROUTE")
     route-str (reduce (fn
       ([a b] (if (= no-route a)
         (str (:origin b) (:destination b))
