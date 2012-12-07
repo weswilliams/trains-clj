@@ -10,9 +10,9 @@
 
 (println (str "Output #5: " (show-route (find-exact-route "A-E-D"))))
 
-(println (str "Output #6: " (count (filter (destination-filter \C) (filter-routes-for \C (max-stops-filter 3))))))
+(println (str "Output #6: " (count (filter-routes-for \C \C (max-stops-filter 3)))))
 
-(println (str "Output #7: " (count (filter (destination-filter \C) (filter-routes-for \A (exact-stops-filter 4))))))
+(println (str "Output #7: " (count (filter-routes-for \A \C (exact-stops-filter 4)))))
 
 (println (str "Output #8: " (distance (shortest-route \A \C))))
 
