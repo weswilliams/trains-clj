@@ -37,13 +37,15 @@
 (defn stops [route-map]
   (reduce (fn [a b] (inc a)) 0 route-map))
 
+(defn take-while-filter [filter-by] (partial take-while filter-by))
+
 (defn destination-filter [destination] (fn [route-map] (= destination (destination-of route-map))))
 
-(defn max-distance-filter [max-distance] (fn [route-map] (<= (distance route-map) max-distance)))
+(defn max-distance-filter [max-distance] (take-while-filter (fn [route-map] (<= (distance route-map) max-distance))))
 
-(defn max-stops-filter [max-stops] (fn [route-map] (<= (stops route-map) max-stops)))
+(defn max-stops-filter [max-stops] (take-while-filter (fn [route-map] (<= (stops route-map) max-stops))))
 
-(defn filter-routes-for [origin filter-by] (take-while filter-by (routes-for origin)))
+(defn filter-routes-for [origin filter-by] (filter-by (routes-for origin)))
 
 (defn show-route [route-map] 
   (let [
