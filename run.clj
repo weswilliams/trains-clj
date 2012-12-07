@@ -18,4 +18,4 @@
 
 (println (str "Output #9: " (distance (shortest-route \B \B))))
 
-(println (str "Output #10: " (count (filter (destination-filter \C) (filter-routes-for \C (distance-less-than-filter 30))))))
+(println (str "Output #10: " (count (filter-routes-for \C \C (distance-less-than-filter 30)))))
