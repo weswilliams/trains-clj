@@ -39,9 +39,7 @@
 
 (defn take-while-filter [filter-by] (partial take-while filter-by))
 
-(defn destination-filter [destination] (fn [route-map] (= destination (destination-of route-map))))
-
-(defn new-destination-filter [destination] 
+(defn destination-filter [destination] 
   (partial filter (fn [route-map] (= destination (destination-of route-map)))))
 
 (defn distance-less-than-filter [less-than-distance] 
@@ -61,11 +59,11 @@
 (defn filter-routes-for 
   ([origin filter-by] (filter-by (routes-for origin)))
   ([origin destination filter-by] 
-    (let [dest-filter (new-destination-filter destination)]
+    (let [dest-filter (destination-filter destination)]
       (dest-filter (filter-routes-for origin filter-by)))))
 
 (defn shortest-route [origin destination] (first (take 1 
-  (let [dest-filter (new-destination-filter destination)]
+  (let [dest-filter (destination-filter destination)]
     (dest-filter (routes-for origin))))))
 
 (defn show-route [route-map] 
