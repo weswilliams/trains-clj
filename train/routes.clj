@@ -1,8 +1,8 @@
 (ns train.routes (:require [clojure.core :refer :all]))
 (import 'java.lang.Integer)
 
-(def routes (sort-by :distance (for [route (re-seq #"[a-zA-Z]{2}\d" "AB5 BC4 CD8 DC8 DE6 AD5 CE2 EB3 AE7")] 
-  (array-map :origin (nth route 0) :destination (nth route 1) :distance (Integer/parseInt (str (nth route 2)))))))
+(def routes (for [route (re-seq #"[a-zA-Z]{2}\d" "AB5 BC4 CD8 DC8 DE6 AD5 CE2 EB3 AE7")] 
+  (array-map :origin (nth route 0) :destination (nth route 1) :distance (Integer/parseInt (str (nth route 2))))))
 
 (defn route-pairs [route-str] (for [route (re-seq #"(?=([a-zA-Z]-[a-zA-Z]))" route-str)] (nth route 1)))
 
@@ -41,7 +41,11 @@
 
 (defn destination-filter [destination] (fn [route-map] (= destination (destination-of route-map))))
 
-(defn max-distance-filter [max-distance] (take-while-filter (fn [route-map] (<= (distance route-map) max-distance))))
+(defn distance-less-than-filter [less-than-distance] 
+  (let [
+    sort-fn #(compare (distance %1) (distance %2))
+    distance-filter (take-while-filter (fn [route-map] (< (distance route-map) less-than-distance)))]
+  (fn [coll] (distance-filter (sort sort-fn (take 1000 coll))))))
 
 (defn max-stops-filter [max-stops] (take-while-filter (fn [route-map] (<= (stops route-map) max-stops))))
 
@@ -52,6 +56,9 @@
       (max-stops-f coll)))))
 
 (defn filter-routes-for [origin filter-by] (filter-by (routes-for origin)))
+
+(defn shortest-route [origin destination] (first (take 1 (
+  filter (destination-filter destination) (routes-for origin)))))
 
 (defn show-route [route-map] 
   (let [
