@@ -64,8 +64,9 @@
     (let [dest-filter (new-destination-filter destination)]
       (dest-filter (filter-routes-for origin filter-by)))))
 
-(defn shortest-route [origin destination] (first (take 1 (
-  filter (destination-filter destination) (routes-for origin)))))
+(defn shortest-route [origin destination] (first (take 1 
+  (let [dest-filter (new-destination-filter destination)]
+    (dest-filter (routes-for origin))))))
 
 (defn show-route [route-map] 
   (let [
