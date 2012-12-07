@@ -56,11 +56,13 @@
       (fn [route-map] (= exact-stops (stops route-map)))
       (max-stops-f coll)))))
 
+(defn multi-filter [filters]
+  (fn [coll] (reduce (fn [coll filter] (filter coll)) coll filters)))
+
 (defn filter-routes-for 
   ([origin filter-by] (filter-by (routes-for origin)))
   ([origin destination filter-by] 
-    (let [dest-filter (destination-filter destination)]
-      (dest-filter (filter-routes-for origin filter-by)))))
+    (filter-routes-for origin (multi-filter [(destination-filter destination) filter-by]))))
 
 (defn shortest-route [origin destination] (first (take 1 
   (let [dest-filter (destination-filter destination)]
