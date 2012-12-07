@@ -29,11 +29,6 @@
         routes (iterate (fn [routes] (mapcat (fn [route] (connections-for route)) routes)) origins)]
      (mapcat (fn [routes] routes) routes)))
 
-(defn old-distance [route-map]
-  (reduce (fn
-    ([a b] (+ (or (get a :distance) a) (get b :distance))))
-    0 route-map))
-
 (defn distance [route-map]
   (reduce (fn
     ([a b] (+ (or (:distance a) a) (:distance b))))
