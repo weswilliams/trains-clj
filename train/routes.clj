@@ -34,6 +34,10 @@
     ([a b] (+ (or (:distance a) a) (:distance b))))
     0 route-map))
 
+(defn max-distance-filter [max-distance] (fn [route-map] (< (distance route-map) max-distance)))
+
+(defn filter-routes-for [origin filter-by] (take-while filter-by (routes-for origin)))
+
 (defn show-route [route-map] 
   (let [
     no-route (str "No Route")
@@ -45,8 +49,4 @@
     (if (= no-route route-str)
       no-route
       (str route-str (distance route-map)))))
-
-(defn max-distance-filter [max-distance] (fn [route-map] (< (distance route-map) max-distance)))
-
-(defn filter-routes-for [origin filter-by] (take-while filter-by (routes-for origin)))
 
