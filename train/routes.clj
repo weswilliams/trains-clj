@@ -41,6 +41,9 @@
 
 (defn destination-filter [destination] (fn [route-map] (= destination (destination-of route-map))))
 
+(defn new-destination-filter [destination] 
+  (partial filter (fn [route-map] (= destination (destination-of route-map)))))
+
 (defn distance-less-than-filter [less-than-distance] 
   (let [
     sort-fn #(compare (distance %1) (distance %2))
@@ -57,7 +60,9 @@
 
 (defn filter-routes-for 
   ([origin filter-by] (filter-by (routes-for origin)))
-  ([origin destination filter-by] (filter (destination-filter destination) (filter-routes-for origin filter-by))))
+  ([origin destination filter-by] 
+    (let [dest-filter (new-destination-filter destination)]
+      (dest-filter (filter-routes-for origin filter-by)))))
 
 (defn shortest-route [origin destination] (first (take 1 (
   filter (destination-filter destination) (routes-for origin)))))
