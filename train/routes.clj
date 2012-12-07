@@ -45,6 +45,12 @@
 
 (defn max-stops-filter [max-stops] (take-while-filter (fn [route-map] (<= (stops route-map) max-stops))))
 
+(defn exact-stops-filter [exact-stops]
+  (let [max-stops-f (max-stops-filter exact-stops)]
+    (fn [coll] (filter 
+      (fn [route-map] (= exact-stops (stops route-map)))
+      (max-stops-f coll)))))
+
 (defn filter-routes-for [origin filter-by] (filter-by (routes-for origin)))
 
 (defn show-route [route-map] 
