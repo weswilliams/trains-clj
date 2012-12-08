@@ -6,7 +6,9 @@
 
 (defn route-pairs [route-str] (for [route (re-seq #"(?=([a-zA-Z]-[a-zA-Z]))" route-str)] (nth route 1)))
 
-(defn route-map [route-str] (for [pair (route-pairs route-str)] (array-map :origin (nth pair 0) :destination (nth pair 2))))
+(defn route-map [route-str] 
+  (for [pair (route-pairs route-str)] 
+    (array-map :origin (nth pair 0) :destination (nth pair 2))))
 
 (defn describes-route [route-descriptor route]
   (and (= (get route-descriptor :origin) (get route :origin))
