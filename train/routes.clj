@@ -11,8 +11,8 @@
     (array-map :origin (nth pair 0) :destination (nth pair 2))))
 
 (defn describes-route [route-descriptor route]
-  (and (= (get route-descriptor :origin) (get route :origin))
-       (= (get route-descriptor :destination) (get route :destination))))
+  (and (= (:origin route-descriptor) (:origin route))
+       (= (:destination route-descriptor) (:destination route))))
 
 (defn find-exact-route [route-str] (let [found-routes (for [route-descriptor (route-map route-str)]
   (reduce (fn [route1, route2] (or route1 (if (describes-route route-descriptor route2) route2))) nil routes))]
