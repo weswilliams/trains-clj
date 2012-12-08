@@ -19,7 +19,7 @@
   (if (not-any? nil? found-routes) found-routes '())))
 
 (defn routes-from [origin]
-  (filter (fn [route] (= origin (get route :origin))) routes))
+  (filter (fn [route] (= origin (:origin route))) routes))
 
 (defn destination-of [route-map] (:destination (last route-map)))
 
