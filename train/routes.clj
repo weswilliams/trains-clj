@@ -68,14 +68,8 @@
   (filter-routes-for origin (destination-filter destination)))))
 
 (defn show-route [route-map] 
-  (let [
-    no-route (str "NO SUCH ROUTE")
-    route-str (reduce (fn
-      ([a b] (if (= no-route a)
-        (str (:origin b) (:destination b))
-        (str a (:destination b)))))
-      no-route route-map)]
-    (if (= no-route route-str)
-      no-route
+  (let [route-str (str (reduce (fn [a b] (str a (:origin b))) "" route-map) (:destination (last route-map)))]
+    (if (= "" route-str)
+      (str "NO SUCH ROUTE")
       (str route-str (distance route-map)))))
 
