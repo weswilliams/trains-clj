@@ -39,6 +39,9 @@
 (defn stops [route-map]
   (reduce (fn [a b] (inc a)) 0 route-map))
 
+(defn multi-filter [filters]
+  (fn [coll] (reduce (fn [coll filter] (filter coll)) coll filters)))
+
 (defn take-while-filter [filter-by] (partial take-while filter-by))
 
 (defn destination-filter [destination] 
@@ -52,14 +55,9 @@
 
 (defn max-stops-filter [max-stops] (take-while-filter (fn [route-map] (<= (stops route-map) max-stops))))
 
-(defn exact-stops-filter [exact-stops]
-  (let [max-stops-f (max-stops-filter exact-stops)]
-    (fn [coll] (filter 
-      (fn [route-map] (= exact-stops (stops route-map)))
-      (max-stops-f coll)))))
-
-(defn multi-filter [filters]
-  (fn [coll] (reduce (fn [coll filter] (filter coll)) coll filters)))
+(defn exact-stops-filter [exact-stops] (multi-filter [
+    (max-stops-filter exact-stops)
+    (partial filter (fn [route-map] (= exact-stops (stops route-map))))]))
 
 (defn filter-routes-for 
   ([origin filter-by] (filter-by (routes-for origin)))
