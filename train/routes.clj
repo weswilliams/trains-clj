@@ -48,10 +48,8 @@
   (partial filter (fn [route-map] (= destination (destination-of route-map)))))
 
 (defn distance-less-than-filter [less-than-distance] 
-  (let [
-    sort-fn #(compare (distance %1) (distance %2))
-    distance-filter (take-while-filter (fn [route-map] (< (distance route-map) less-than-distance)))]
-  (fn [coll] (distance-filter (sort sort-fn (take 1000 coll))))))
+  (let [ distance-filter (take-while-filter (fn [route-map] (< (distance route-map) less-than-distance)))]
+  (fn [coll] (distance-filter (sort-by distance < (take 1000 coll))))))
 
 (defn max-stops-filter [max-stops] (take-while-filter (fn [route-map] (<= (stops route-map) max-stops))))
 
